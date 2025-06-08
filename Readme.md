@@ -102,9 +102,6 @@ ssh  -i  your-key.pem  ubuntu@YOUR.EC2.IP.ADDRESS
 ```bash
 sudo  apt  update
 sudo  apt  install  nodejs  npm  -y
-
-node  -v
-npm  -v
 ```
 
   
