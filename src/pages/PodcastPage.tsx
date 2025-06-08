@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { podcastEpisodes, PodcastEpisode } from '../data/podcasts';
 import { useAudio } from '../context/AudioContext';
-import { Play, Pause, Calendar, Clock, Share2 } from 'lucide-react';
+import { Play, Pause, Calendar, Clock, Share2, Check } from 'lucide-react';
 import PodcastCard from '../components/PodcastCard';
 import PodcastDetailsSkeleton from '../components/PodcastDetailsSkeleton';
 import { useScrollTop } from '../hooks/useScrollTop';
@@ -12,6 +12,7 @@ const PodcastPage: React.FC = () => {
   const [episode, setEpisode] = useState<PodcastEpisode | null>(null);
   const [relatedEpisodes, setRelatedEpisodes] = useState<PodcastEpisode[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showCopied, setShowCopied] = useState(false);
   const scrollTop = useScrollTop();
   
   const { 
@@ -82,6 +83,16 @@ const PodcastPage: React.FC = () => {
     }
   };
   
+  const handleShare = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setShowCopied(true);
+      setTimeout(() => setShowCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy link:', err);
+    }
+  };
+  
   const progress = duration ? (currentTime / duration) * 100 : 0;
   
   return (
@@ -148,8 +159,19 @@ const PodcastPage: React.FC = () => {
                     )}
                   </button>
                   
-                  <button className="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 text-white font-medium py-3 px-6 rounded-full transition-colors">
-                    <Share2 size={20} /> Share
+                  <button 
+                    onClick={handleShare}
+                    className="flex items-center gap-2 bg-neutral-800 hover:bg-neutral-700 text-white font-medium py-3 px-6 rounded-full transition-colors relative"
+                  >
+                    {showCopied ? (
+                      <>
+                        <Check size={20} /> Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Share2 size={20} /> Share
+                      </>
+                    )}
                   </button>
                 </div>
               </div>
