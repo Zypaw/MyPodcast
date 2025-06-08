@@ -102,6 +102,9 @@ ssh  -i  your-key.pem  ubuntu@YOUR.EC2.IP.ADDRESS
 ```bash
 sudo  apt  update
 sudo  apt  install  nodejs  npm  -y
+
+node  -v
+npm  -v
 ```
 
   
@@ -145,7 +148,7 @@ sudo  cp  -r  dist/*  /var/www/html/
 sudo  systemctl  restart  apache2
 ```
 
-> You can now see the website at [52.64.90.30](http://52.64.90.30)
+> You can now see the website at [52.64.90.30](52.64.90.30)
 
   
 
@@ -219,6 +222,48 @@ sudo systemctl start newsletter-server
 **3 : Check the Status**
 ```bash
 sudo systemctl status newsletter-server
+```
+
+### Step 10: Enable Proxy to Serve API Over HTTPS
+**1 : Enable Apache Proxy Modules**
+
+```
+sudo a2enmod proxy
+sudo a2enmod proxy_http
+```
+
+**2 : Configure Apache to Proxy `/api` Routes**
+
+Edit your Apache SSL config
+```bash
+sudo nano /etc/apache2/sites-available/000-default-le-ssl.conf
+```
+Replace content by
+```
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html/podcast
+
+    ServerName podcast.matteodupond.fr
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    Include /etc/letsencrypt/options-ssl-apache.conf
+    SSLCertificateFile /etc/letsencrypt/live/podcast.matteodupond.fr/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/podcast.matteodupond.fr/privkey.pem
+
+    ProxyPreserveHost On
+    ProxyPass /api/ http://localhost:3001/api/
+    ProxyPassReverse /api/ http://localhost:3001/api/
+
+</VirtualHost>
+</IfModule>
+```
+Restart Apache and then test directly to submit a mail on the website
+```bash
+sudo systemctl restart apache2
 ```
 
 
