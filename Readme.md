@@ -148,7 +148,7 @@ sudo  cp  -r  dist/*  /var/www/html/
 sudo  systemctl  restart  apache2
 ```
 
-> You can now see the website at [http://52.64.90.30](52.64.90.30)
+> You can now see the website at [52.64.90.30](http://52.64.90.30)
 
   
 
