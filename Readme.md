@@ -66,10 +66,10 @@
 3. Open the following ports in the security group:
 
 - HTTP (80)
-
 - HTTPS (443)
-
 - SSH (22)
+- Custom TCP (3001) for the newsletter API
+
 
 4. Assign or create an Elastic IP and associate it with your EC2 instance.
 
@@ -148,7 +148,7 @@ sudo  cp  -r  dist/*  /var/www/html/
 sudo  systemctl  restart  apache2
 ```
 
-> You can now see the website at [52.64.90.30](52.64.90.30)
+> You can now see the website at [http://52.64.90.30](52.64.90.30)
 
   
 
@@ -189,4 +189,41 @@ Follow the prompts to:
 
 > Test by visiting: `https://podcast.matteodupond.fr`
 
+### Step 9: Run the Newsletter API
+**1 : Create a Service File**  
+```bash
+sudo nano /etc/systemd/system/newsletter-server.service
+```
+paste the following
+```
+[Unit]
+Description=Newsletter Node.js Server
+After=network.target
+
+[Service]
+WorkingDirectory=/home/ubuntu/MyPodcast
+ExecStart=/usr/bin/npm run server
+Restart=always
+User=ubuntu
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+```
+
+**2 : Enable and Start the Service**
+```bash
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl enable newsletter-server
+sudo systemctl start newsletter-server
+```
+
+**3 : Check the Status**
+```bash
+sudo systemctl status newsletter-server
+```
+
+
 # And there you go ! 
+

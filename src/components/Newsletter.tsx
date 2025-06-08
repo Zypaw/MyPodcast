@@ -13,7 +13,7 @@ const Newsletter: React.FC = () => {
         setIsError(false);
 
         try {
-            const response = await fetch('http://localhost:3001/api/newsletter/subscribe', {
+            const response = await fetch('http://podcast.matteodupond.fr:3001/api/newsletter/subscribe', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
