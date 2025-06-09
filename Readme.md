@@ -21,11 +21,11 @@
 
   
 
--  **GitHub Repository:** [https://github.com/Zypaw/MyPodcast](https://github.com/Zypaw/MyPodcast)
+-  **GitHub Repository:** [github.com/Zypaw/MyPodcast](https://github.com/Zypaw/MyPodcast)
 
--  **Live Website:** [https://podcast.matteodupond.fr](https://podcast.matteodupond.fr)
+-  **Live Website:** [podcast.matteodupond.fr](https://podcast.matteodupond.fr)
 
--  **Video Explainer:** [https://youtu.be/YOUR_VIDEO_ID](https://youtu.be/YOUR_VIDEO_ID)
+-  **Video Explainer:** [link](https://www.youtube.com/watch?v=H00Ufldhuh)
 
   
 
