@@ -41,6 +41,8 @@
 
 - React + Vite + Tailwind (Frontend)
 
+- Node.js + Express + sqlite3 (Newsletter API)
+
 - Apache2 (Web server)
 
 - Certbot with Let's Encrypt (HTTPS/SSL)
