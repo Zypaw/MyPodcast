@@ -51,11 +51,11 @@
 
   
 
-## 🛠️ Full Setup Instructions
+## 🚀 Full Setup Instructions
 
   
 
-### Step 1: Launch EC2 Instance
+### Step 1: Launch EC2 Instance 🛫 
 
   
 
@@ -79,7 +79,7 @@
 
   
 
-### Step 2: Connect via SSH
+### Step 2: Connect via SSH 🔐
 
   
 
@@ -95,7 +95,7 @@ ssh  -i  your-key.pem  ubuntu@YOUR.EC2.IP.ADDRESS
 
   
 
-### Step 3: Install Node.js and npm
+### Step 3: Install Node.js and npm 📦
 
   
 
@@ -109,7 +109,7 @@ npm  -v
 
   
 
-### Step 4: Clone the Website
+### Step 4: Clone the Website 📁 
 
   
 
@@ -120,7 +120,7 @@ cd  MyPodcast
 
   
 
-### Step 5: Install Dependencies and Build the App
+### Step 5: Install Dependencies and Build the App 🏗️ 
 
   
 
@@ -131,7 +131,7 @@ npm  run  build
 
   
 
-### Step 6: Install and Configure Apache2
+### Step 6: Install and Configure Apache2 🌍 
 
   
 
@@ -152,7 +152,8 @@ sudo  systemctl  restart  apache2
 
   
 
-### Step 7: Link a Domain
+### Step 7: Link a Domain 🌐
+
 
 To use a custom domain, update your DNS A record:
 
@@ -172,7 +173,7 @@ Wait for propagation (may take a few minutes to a few hours).
 
   
 
-### Step 8: Secure Your Site with HTTPS
+### Step 8: Secure Your Site with HTTPS 🔒 
 
   
 
@@ -189,7 +190,7 @@ Follow the prompts to:
 
 > Test by visiting: `https://podcast.matteodupond.fr`
 
-### Step 9: Run the Newsletter API
+### Step 9: Run the Newsletter API 📬
 **1 : Create a Service File**  
 ```bash
 sudo nano /etc/systemd/system/newsletter-server.service
@@ -224,7 +225,7 @@ sudo systemctl start newsletter-server
 sudo systemctl status newsletter-server
 ```
 
-### Step 10: Enable Proxy to Serve API Over HTTPS
+### Step 10: Enable Proxy to Serve API Over HTTPS 🔁
 **1 : Enable Apache Proxy Modules**
 
 ```
@@ -266,9 +267,9 @@ Restart Apache and then test directly to submit a mail on the website
 sudo systemctl restart apache2
 ```
 
-## How to put the website in Maintenance ?
+## 🏗️ How to put the website in Maintenance ?
 
-### Create a maintenance page :
+### Step 1 : Create a maintenance page 🧾
 ```bash
 sudo nano /var/www/html/maintenance.html
 ```
@@ -286,7 +287,7 @@ Paste this :
 </body>
 </html>
 ```
-### Add config to apache
+### Step 2 : Add config to apache 🛠️
 ```bash
 sudo nano /etc/apache2/sites-available/maintenance.conf
 ```
@@ -317,7 +318,7 @@ Paste this :
 </VirtualHost>
 </IfModule>
 ```
-### Manually enable/disable Maintenance
+### Manually enable/disable Maintenance ⌨️
 
 You can use this command to put the website in Maintenance mode
 ```bash
@@ -335,7 +336,7 @@ sudo a2ensite 000-default.conf
 sudo a2ensite 000-default-le-ssl.conf
 sudo systemctl reload apache2
 ```
-### Setup cron job to automaticaly put the website in maintenance every Sunday
+## Setup cron job to automaticaly put the website in maintenance every Sunday 📆
 
 ```bash
 sudo crontab -e
@@ -360,17 +361,18 @@ sudo systemctl status cron
 
 ## Other cron job that runs on the server
 
-🛠️ **1. Restart Node.js Newsletter API Weekly Every Sunday at 2:10 AM**
+🛠️ **Restart Node.js Newsletter API Weekly Every Sunday at 2:10 AM**
 
 ```cron
 10 2 * * 0 /usr/bin/systemctl restart newsletter-server
 ```
 
-📦 **2. Auto Rebuild Frontend Daily at 3 AM**
+♻️ **Auto Rebuild Frontend Daily at 3 AM**
 
 ```cron
 0 3 * * * cd /home/ubuntu/MyPodcast && /usr/bin/npm run build && cp -r dist/* /var/www/html/
 ```
 
-# And there you go ! 
+
+# And there you go !
 
