@@ -266,6 +266,111 @@ Restart Apache and then test directly to submit a mail on the website
 sudo systemctl restart apache2
 ```
 
+## How to put the website in Maintenance ?
+
+### Create a maintenance page :
+```bash
+sudo nano /var/www/html/maintenance.html
+```
+Paste this : 
+```bash
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Maintenance</title>
+</head>
+<body>
+  <h1>🚧 Site Under Maintenance</h1>
+  <p>We’ll be back shortly. Thank you for your patience.</p>
+</body>
+</html>
+```
+### Add config to apache
+```bash
+sudo nano /etc/apache2/sites-available/maintenance.conf
+```
+Paste this :
+```bash
+<VirtualHost *:80>
+    ServerName podcast.matteodupond.fr
+    RedirectMatch 302 ^/$ /maintenance.html
+    DocumentRoot /var/www/html
+</VirtualHost>
+```
+
+```bash
+sudo nano /etc/apache2/sites-available/maintenance-ssl.conf
+```
+Paste this :
+```bash
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+    ServerName podcast.matteodupond.fr
+
+    DocumentRoot /var/www/html
+    RedirectMatch 302 ^/$ /maintenance.html
+
+    Include /etc/letsencrypt/options-ssl-apache.conf
+    SSLCertificateFile /etc/letsencrypt/live/podcast.matteodupond.fr/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/podcast.matteodupond.fr/privkey.pem
+</VirtualHost>
+</IfModule>
+```
+### Manually enable/disable Maintenance
+
+You can use this command to put the website in Maintenance mode
+```bash
+sudo a2dissite 000-default.conf
+sudo a2dissite 000-default-le-ssl.conf
+sudo a2ensite maintenance.conf
+sudo a2ensite maintenance-ssl.conf
+sudo systemctl reload apache2
+```
+You can use this command to put the website back on 
+```bash
+sudo a2dissite maintenance.conf
+sudo a2dissite maintenance-ssl.conf
+sudo a2ensite 000-default.conf
+sudo a2ensite 000-default-le-ssl.conf
+sudo systemctl reload apache2
+```
+### Setup cron job to automaticaly put the website in maintenance every Sunday
+
+```bash
+sudo crontab -e
+```
+
+**🕑 Enable Maintenance Mode Every Sunday at 2:00 AM**
+```bash
+0 2 * * 0 /usr/bin/sudo /usr/sbin/a2dissite 000-default.conf && /usr/bin/sudo /usr/sbin/a2dissite 000-default-le-ssl.conf && /usr/bin/sudo /usr/sbin/a2ensite maintenance.conf && /usr/bin/sudo /usr/sbin/a2ensite maintenance-ssl.conf && /usr/bin/sudo /bin/systemctl reload apache2
+```
+**🕝 Disable Maintenance Mode Every Sunday at 2:30 AM**
+```bash
+30 2 * * 0 /usr/bin/sudo /usr/sbin/a2dissite maintenance.conf && /usr/bin/sudo /usr/sbin/a2dissite maintenance-ssl.conf && /usr/bin/sudo /usr/sbin/a2ensite 000-default.conf && /usr/bin/sudo /usr/sbin/a2ensite 000-default-le-ssl.conf && /usr/bin/sudo /bin/systemctl reload apache2
+```
+Now verify that theses jobs are registered :
+```bash
+sudo crontab -l
+```
+
+```bash
+sudo systemctl status cron
+```
+
+## Other cron job that runs on the server
+
+🛠️ **1. Restart Node.js Newsletter API Weekly Every Sunday at 2:10 AM**
+
+```cron
+10 2 * * 0 /usr/bin/systemctl restart newsletter-server
+```
+
+📦 **2. Auto Rebuild Frontend Daily at 3 AM**
+
+```cron
+0 3 * * * cd /home/ubuntu/MyPodcast && /usr/bin/npm run build && cp -r dist/* /var/www/html/
+```
 
 # And there you go ! 
 
