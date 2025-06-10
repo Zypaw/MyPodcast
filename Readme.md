@@ -25,7 +25,7 @@
 
 -  **Live Website:** [podcast.matteodupond.fr](https://podcast.matteodupond.fr)
 
--  **Video Explainer:** [link](https://www.youtube.com/watch?v=H00Ufldhuh)
+-  **Video Explainer:** [link](https://www.youtube.com/watch?v=B9Yna5OsaFs)
 
   
 
