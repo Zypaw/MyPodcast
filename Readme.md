@@ -372,7 +372,7 @@ sudo systemctl status cron
 ♻️ **Auto Rebuild Frontend Daily at 3 AM**
 
 ```cron
-0 3 * * * cd /home/ubuntu/MyPodcast && /usr/bin/npm run build && cp -r dist/* /var/www/html/
+0 3 * * * cd /home/ubuntu/MyPodcast && git pull && /usr/bin/npm run build && cp -r dist/* /var/www/html/
 ```
 
 
